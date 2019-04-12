@@ -23,6 +23,13 @@ input[type=text], input[type=password] {
   box-sizing: border-box;
 }
 
+.small_input {
+  max-width: 128px;
+  max-height: 24px;
+  margin: 0;
+  margin-right: 8px;
+}
+
 /* Set a style for all buttons */
 button {
   background-color: #EADD84;
@@ -36,6 +43,102 @@ button {
 
 button:hover {
   opacity: 0.8;
+}
+
+button.small_button {
+  max-width: 128px;
+  max-height: 32px;
+  padding: 8px 12px;
+  margin-right: 8px;
+  background-color: blue;
+  border-radius: 1em;
+
+}
+
+.inline {
+  display: inline-block;
+}
+
+/* Navbar styles */
+navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #4c4c4c;
+  background: -moz-linear-gradient(top, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2c2c2c 50%, #000000 51%, #111111 60%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+  background: -webkit-linear-gradient(top, #4c4c4c 0%,#595959 12%,#666666 25%,#474747 39%,#2c2c2c 50%,#000000 51%,#111111 60%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%);
+  background: linear-gradient(to bottom, #4c4c4c 0%,#595959 12%,#666666 25%,#474747 39%,#2c2c2c 50%,#000000 51%,#111111 60%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313',GradientType=0 );
+  height: 6em;
+}
+
+.title, .login, .login-name {
+  display:inline-block;
+}
+
+.title {
+  float: left;
+  font-size: 2em;
+  font-weight: bold;
+  color: white;
+  padding-top: 0.25em;
+  padding-left: 0.25em;
+}
+
+.login {
+  float: right;
+  width: 50%;
+  text-align: right;
+}
+
+.has-login, .create-login, .use-login, .alert, .affirmation {
+  display: none;
+}
+
+.login-name {
+  color: white;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+/* Message styles */
+#messages {
+  position: fixed;
+  top: 6em;
+  left: 0;
+  width: 100%;
+}
+
+.alert, .affirmation {
+  width: 100%;
+  color: white;
+  min-height: 4em;
+}
+
+.alert-message, .affirmation-message {
+  font-size: 1.25em;
+  vertical-align: middle;
+  padding: 2em;
+}
+
+.alert {
+  background-color: red;
+}
+
+.affirmation {
+  background-color: green;
+}
+
+.close-alert, .close-affirmation {
+  position: fixed;
+  top: 8em;
+  right: 0;
+}
+
+/* Map Styles */
+#map {
+  margin-top: 6.5em;
 }
 
 /* Extra styles for the cancel button */
@@ -94,12 +197,12 @@ span.psw {
 }
 
 @-webkit-keyframes animatezoom {
-  from {-webkit-transform: scale(0)} 
+  from {-webkit-transform: scale(0)}
   to {-webkit-transform: scale(1)}
 }
-  
+
 @keyframes animatezoom {
-  from {transform: scale(0)} 
+  from {transform: scale(0)}
   to {transform: scale(1)}
 }
 
