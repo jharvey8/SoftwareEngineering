@@ -1,0 +1,118 @@
+extends layout
+block content
+  head
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+  body
+    h3 Welcome to Ghoul Alert App
+    iframe(src='https://www.google.com/maps/d/embed?mid=1_UI6WRqjCzomDvp1b1sLZYz7qY8&hl=en_US', width='640', height='480')
+    section
+      button(onclick="document.getElementById('id01').style.display='block'", style='width:auto;') LOG IN
+      #id01.modal
+        form.modal-content.animate(action='/UserProfile.pug')
+          h3 Member Log In
+          .imgcontainer
+            span.close(onclick="document.getElementById('id01').style.display='none'", title='Close Modal') ×
+          .container
+            label(for='uname')
+              b Username
+            input#username(type='text', placeholder='Enter Username', name='uname', required='')
+            label(for='psw')
+              b Password
+            input#password(type='password', placeholder='Enter Password', name='psw', required='')
+            button#login(type='submit') Login
+            label
+              input(type='checkbox', checked='checked', name='remember')
+              |  Remember me
+          .container(style='background-color:#f1f1f1;')
+            button.cancelbtn(type='button', onclick="document.getElementById('id01').style.display='none'") Cancel
+            span.psw
+              | Forgot 
+              a(href='#') password?
+        script.
+          // Get the modal
+          var modal = document.getElementById('id01');
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+          if (event.target == modal) {
+          modal.style.display = "none";
+          }
+          }
+        script.
+          $(document).ready(function () {
+          $("#login").click(function (e) {
+          $.ajax({
+          type: "POST",
+          url: "apiV1/users/login",
+          contentType: "application/json; charset=utf-8",
+          data: '{"username":"' + $("#username").val() + '","password":"' + $("#password").val() + '"}',
+          dataType: "json",
+          success: function (result, status, xhr) {
+          if (result.d == "Success") {
+          $("#messageSpan").text("Login Successful, Redireting to your profile page.");
+          setTimeout(function () { window.location = "UserProfile.html"; }, 2000);
+          }
+          else
+          $("#messageSpan").text("Login failed, Please try again.");
+          },
+          error: function (xhr, status, error) {
+          $("#dbData").html("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
+          }
+          });
+          });
+          });
+    section
+      button(onclick="document.getElementById('id02').style.display='block'", style='width:auto;') SIGN UP
+      #id02.modal
+        form.modal-content.animate(action='/UserProfile.pug')
+          h3 Member Sign Up
+          .imgcontainer
+            span.close(onclick="document.getElementById('id02').style.display='none'", title='Close Modal') ×
+          .container
+            label(for='uname')
+              b Username
+            input#username(type='text', placeholder='Enter Username', name='uname', required='')
+            label(for='psw')
+              b Password
+            input#password(type='password', placeholder='Enter Password', name='psw', required='')
+            button(type='submit') Sign Up
+            label
+              input(type='checkbox', checked='checked', name='remember')
+              |  Remember me
+          .container(style='background-color:#f1f1f1;')
+            button.cancelbtn(type='button', onclick="document.getElementById('id02').style.display='none'") Cancel
+            span.psw
+              | Forgot 
+              a(href='#') password?
+        script.
+          // Get the modal
+          var modal = document.getElementById('id02');
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+          if (event.target == modal) {
+          modal.style.display = "none";
+          }
+          }
+        script.
+          $(document).ready(function () {
+          $("#submit").click(function (e) {
+          $.ajax({
+          type: "POST",
+          url: "apiV1/users",
+          contentType: "application/json; charset=utf-8",
+          data: '{"username":"' + $("#username").val() + '","password":"' + $("#password").val() + '"}',
+          dataType: "json",
+          success: function (result, status, xhr) {
+          if (result.d == "Success") {
+          $("#messageSpan").text("Login Successful, Redireting to your profile page.");
+          setTimeout(function () { window.location = "UserProfile.html"; }, 2000);
+          }
+          else
+          $("#messageSpan").text("Login failed, Please try again.");
+          },
+          error: function (xhr, status, error) {
+          $("#dbData").html("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
+          }
+          });
+          });
+          });

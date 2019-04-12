@@ -1,0 +1,53 @@
+extends layout
+block content  
+  head
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+  body
+    h3 Welcome to Ghoul Alert App
+    section
+      iframe(src='https://www.google.com/maps/d/embed?mid=1_UI6WRqjCzomDvp1b1sLZYz7qY8&hl=en_US', width='640', height='480')
+    section
+      button(onclick="document.getElementById('id01').style.display='block'", style='width:auto;') ADD MARKER
+      #id01.modal
+        form.modal-content.animate(action='/')
+          h3 Adding New Marker
+          .imgcontainer
+            span.close(onclick="document.getElementById('id01').style.display='none'", title='Close Modal') ×
+          .container
+            label(for='name')
+              b Marker Name
+            input#markerName(type='text', placeholder='Enter name for Marker', name='name', required='')
+            label(for='description')
+              b Description
+            input#description(type='text', placeholder='Enter description', name='description', required='')
+            button#add(type='submit') CREATE
+          .container(style='background-color:#f1f1f1;')
+            button.cancelbtn(type='button', onclick="document.getElementById('id01').style.display='none'") Cancel
+            script.
+              // Get the modal
+              var modal = document.getElementById('id01');
+              // When the user clicks anywhere outside of the modal, close it
+              window.onclick = function(event) {
+              if (event.target == modal) {
+              modal.style.display = "none";
+              }
+              }
+            script.
+              $(document).ready(function () {
+              $("#login").click(function (e) {
+              $.ajax({
+              type: "POST",
+              url: "apiV1/users/login",
+              contentType: "application/json; charset=utf-8",
+              data: '{"markerName":"' + $("#markerName").val() + '","description":"' + $("#description").val() + '"}',
+              dataType: "json",
+              success: function (result, status, xhr) {
+              },
+              error: function (xhr, status, error) {
+              e.default();
+              }
+              });
+              });
+              });
+    section

@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "ghoul",
+    "password": "ghoul_user!61",
+    "database": "ghoul_development",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "ghoul",
+    "password": "ghoul_user!61",
+    "database": "ghoul_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "ghoul_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}

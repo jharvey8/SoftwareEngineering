@@ -142,3 +142,55 @@ Has debug console. Uses the nodemon package to refresh the server on changes.
 This is the most useful option for development.
 
 `DEBUG=ghoulalert:* npm run devstart`
+
+## 2/28/2019
+### MySQL with Sequelize
+
+This program can now connect to a MySQL database using the Sequelize module as
+an ORM (Object Relational Mapping Tool).
+
+In order for the connection to be established, the database it is expecting needs to
+actually exist.
+
+1. First, follow the instructions to install the MySQL Community Server:
+https://dev.mysql.com/downloads/mysql/
+
+2. Next, you will want to install the MySQL Workbench to help you manage the server more easily:
+https://dev.mysql.com/downloads/workbench/
+
+3. When you open the workbench, under MySQL connections there will be a local instance.
+This is what we will be working with, so open it.
+
+4. In the left panel in the Administration tab, there will be an icon for "Users and Privileges".
+Click this.
+
+5. Here, we need to set up a database user according to the configuration of the program.
+Click "Add Account". Give it the login name "ghoul", and the password "ghoul_user!61".
+Select the "Administrative Roles" tab, and click the "DBA" checkmark, which will select everything.
+Select the "Schema Privileges" tab, and click the "Select "ALL"" button to give this user all privileges.
+Finalize this by clicking the "Apply" button.
+
+6. With the user created, we now need to create the database itself. In the workbench, the words "Schema" and "Database" are used interchangeably, so press the button in the topbar represented by a cylinder to add the schemas that we need.
+
+7. All you need to enter in the Schema Editor is the schema name. Give it the name "ghoul_development"
+and press the small "Apply" button to the bottom right. Repeat this process to create another schema called "ghoul_test". We will use that later when testing is implemented.
+
+8. This is all we need to do to set the database up - Sequelize will take care of creating tables. Navigate to the GhoulAlert directory in the command line/terminal and run the application, and it should successfully connect to and shape the database based on the existing models.
+
+9. Now that the database is set up, let's test the program MVC flow. As of now, we have a view (index.pug) that has a section that iterates on each user that exists, as sent to the view by the route, which in turn
+attains that data from Sequelize reading the user.js model. We can use this view to make sure each step of that process works.
+
+10. Open the MySQL Workbench window again. We need to make a quick modification for the manual insertions we will make to work. On the left panel, open the Schemas tab. Drop down the "ghoul_development" schema, and "Tables". Hover over "Users", and click the wrench icon. Click on the row for "createdAt", and in the "Default" field, type "Now()". Do the same for the "updatedAt" row, then press the "Apply" button at the bottom right and apply these changes.
+
+11. In the middle section, there should be a tab starting with the word "Query". Select this tab and paste the following code (making sure it's the only text present):
+
+```
+INSERT INTO ghoul_development.Users(username, password)
+VALUES ("Manmoth", "bright_light");
+```
+Press the lightning bolt in the bar above the code to run this query.
+
+12. Run the GhoulAlert application. Once it's active, navigate to localhost:3000.
+Under Users, Manmoth's name should be listed.
+
+Catching up to this point is vital to contributing to the project. Complete these instructions and you will be ready when it's time to delegate coding work.
