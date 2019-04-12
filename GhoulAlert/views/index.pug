@@ -17,14 +17,14 @@ block content
           button#destroy-login-button.small_button(type='button') Log Out
         .create-login
           form.user-login-create-form
-            input#new-user-username.small_input.inline(type='text', name='new-username', placeholder='Username', required)
-            input#new-user-password.small_input.inline(type='password', name='new-password', placeholder='Password', required)
+            input#new-user-username.small_input.inline(type='text', name='new-username', placeholder='Username', required='')
+            input#new-user-password.small_input.inline(type='password', name='new-password', placeholder='Password', required='')
             button#new-user-submit.small_button.inline(type='submit') Create User
             button#new-user-cancel.small_button.inline(type='button') Cancel
         .use-login
           form.user-login-use-form
-            input#existing-user-username.small_input.inline(type='text', name='existing-username', placeholder='Username', required)
-            input#existing-user-password.small_input.inline(type='password', name='existing-password', placeholder='Password', required)
+            input#existing-user-username.small_input.inline(type='text', name='existing-username', placeholder='Username', required='')
+            input#existing-user-password.small_input.inline(type='password', name='existing-password', placeholder='Password', required='')
             button#existing-user-submit.small_button.inline(type='submit') Log In
             button#existing-user-cancel.small_button.inline(type='button') Cancel
     #messages
@@ -40,8 +40,8 @@ block content
       iframe(src='https://www.google.com/maps/d/embed?mid=1_UI6WRqjCzomDvp1b1sLZYz7qY8&hl=en_US', width='640', height='480')
         
     section
-      button(onclick="document.getElementById('id01').style.display='block'", style='width:auto;') ADD MARKER
-      #id01.modal
+      button#add-marker-button(style='width:auto;') ADD MARKER
+      #newmarker.modal
         form.modal-content.animate(action='/')
           h3 Adding New Marker
           .imgcontainer
@@ -55,31 +55,5 @@ block content
             input#description(type='text', placeholder='Enter description', name='description', required='')
             button#add(type='submit') CREATE
           .container(style='background-color:#f1f1f1;')
-            button.cancelbtn(type='button', onclick="document.getElementById('id01').style.display='none'") Cancel
-            script.
-              // Get the modal
-              var modal = document.getElementById('id01');
-              // When the user clicks anywhere outside of the modal, close it
-              window.onclick = function(event) {
-              if (event.target == modal) {
-              modal.style.display = "none";
-              }
-              }
-            script.
-              $(document).ready(function () {
-              $("#login").click(function (e) {
-              $.ajax({
-              type: "POST",
-              url: "apiV1/users/login",
-              contentType: "application/json; charset=utf-8",
-              data: '{"markerName":"' + $("#markerName").val() + '","description":"' + $("#description").val() + '"}',
-              dataType: "json",
-              success: function (result, status, xhr) {
-              },
-              error: function (xhr, status, error) {
-              e.default();
-              }
-              });
-              });
-              });
+            button.cancelbtn(type='button') Cancel
     section

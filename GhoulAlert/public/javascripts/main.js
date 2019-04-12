@@ -126,6 +126,37 @@ $(document).ready(() => {
 
   user.loadFromCookie();
 
+  // Marker data and functions
+  var markers = {
+    collection: [],
+
+    retrieve: function() {
+      $.get("apiV1/markers/withusers", (data) => {
+        if (!(data.error || data.errors)) {
+          this.collection = data;
+        } else {
+          console.log("WARNING: Marker retrieval failure");
+        }
+      }).fail((data) => {
+        console.log("WARNING: Marker retrieval failure");
+      });
+    },
+
+    handleErrorsInModal: function() {
+
+    },
+
+    create: function(lat, long, name, desc) {
+      $.post("apiV1/markers", {latitude: latitude, longitude: longitude, name: name, description: desc}, (data) => {
+        if (data.error || data.errors) {
+          this.handleErrorsInModal(data);
+        }
+      });
+    }
+  };
+
+  markers.retrieve();
+
   // Input Handling
   $("#create-login-button").click((e) => {
     $(".no-login").hide();
@@ -174,5 +205,18 @@ $(document).ready(() => {
   $(".close-affirmation").click((e) => {
     msg.closeAffirmation();
   });
+
+  $("#add-marker-button").click((e) => {
+    if (user.isLogged){
+      $("#newmarker").show();
+    } else {
+      msg.showAlert("You must be logged in to add a marker.");
+    }
+  });
+
+  $(".cancelbtn").click((e) => {
+    $("#newmarker").hide();
+  });
+
 
 });
