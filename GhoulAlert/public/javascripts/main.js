@@ -35,11 +35,17 @@ $(document).ready(() => {
     showAlert: function(message) {
       $(".alert-message").text(message);
       $(".alert").slideDown();
+      setTimeout(function() {
+        $('.alert').slideUp('fast');
+      }, 3000);
     },
 
     showAffirmation: function(message) {
       $(".affirmation-message").text(message);
       $(".affirmation").slideDown();
+      setTimeout(function() {
+        $('.affirmation').slideUp('fast');
+      }, 3000);
     },
 
     closeAlert: function() {
@@ -281,14 +287,6 @@ $(document).ready(() => {
   $("#existing-user-cancel").click((e) => {
     $(".use-login").hide();
     $(".no-login").show();
-  });
-
-  $(".close-alert").click((e) => {
-    msg.closeAlert();
-  });
-
-  $(".close-affirmation").click((e) => {
-    msg.closeAffirmation();
   });
 
   $("#add-marker-button").click((e) => {

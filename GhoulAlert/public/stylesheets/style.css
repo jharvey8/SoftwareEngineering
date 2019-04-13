@@ -45,14 +45,21 @@ button:hover {
   opacity: 0.8;
 }
 
-button.small_button {
-  max-width: 128px;
-  max-height: 32px;
-  padding: 8px 12px;
-  margin-right: 8px;
+button.small_button, button.tiny_button {
   background-color: blue;
   border-radius: 1em;
+}
 
+button.small_button {
+  padding: 8px 12px;
+  margin-right: 8px;
+  max-width: 128px;
+  max-height: 32px;
+}
+
+button.tiny_button {
+  max-width: 18px;
+  max-height: 18px;
 }
 
 .inline {
