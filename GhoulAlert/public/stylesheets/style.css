@@ -14,7 +14,7 @@ aside {
 }
 
 /* Full-width input fields */
-input[type=text], input[type=password] {
+input[type=text], input[type=password], textarea {
   width: 100%;
   padding: 12px 20px;
   margin: 8px;
@@ -138,7 +138,15 @@ navbar {
 
 /* Map Styles */
 #map {
+  height: 40em;
+  width: 100%;
   margin-top: 6.5em;
+}
+
+.marker-errors {
+  color: red;
+  font-weight: bold;
+  margin: 1em;
 }
 
 /* Extra styles for the cancel button */
@@ -188,6 +196,14 @@ span.psw {
   color: #A9A9A9;
   font-size: 35px;
   font-weight: bold;
+}
+
+#add-marker-map, #add-marker-form {
+  display: inline-block;
+  width: 45%;
+  height: 25em;
+  margin-bottom: 1em;
+  vertical-align: top;
 }
 
 /* Add Zoom Animation */

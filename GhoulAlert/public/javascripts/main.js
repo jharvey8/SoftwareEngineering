@@ -1,3 +1,34 @@
+// Global variables
+var map;
+var modalMap;
+var modalMapMarker;
+
+// Map initialization
+function initMap() {
+  $(document).ready(() => {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 42.3143286, lng: -71.0403235},
+      zoom: 8
+    });
+
+    modalMap = new google.maps.Map(document.getElementById('add-marker-map'), {
+      center: {lat: 42.3143286, lng: -71.0403235},
+      zoom: 14
+    });
+
+    modalMapMarker = new google.maps.Marker({
+      position: modalMap.getCenter(),
+      map: modalMap,
+      title: 'Sighting Occurred Here'
+    });
+
+    google.maps.event.addListener(modalMap, 'click', function(event) {
+      modalMapMarker.setPosition(event.latLng);
+      modalMap.panTo(event.latLng);
+    });
+  });
+}
+
 $(document).ready(() => {
   // Message functions
   var msg = {
@@ -28,6 +59,14 @@ $(document).ready(() => {
       token: null,
       isLogged: false,
 
+      setTokenHeader: function() {
+        $.ajaxSetup({
+          headers: {
+            Authorization: "Token " + this.token
+          }
+        });
+      },
+
       loadFromCookie: function() {
         if (Cookies.get('username') && Cookies.get('token')) {
           this.username = Cookies.get('username');
@@ -36,6 +75,7 @@ $(document).ready(() => {
           $(".login-name").text(this.username);
           $(".no-login").hide();
           $(".has-login").show();
+          this.setTokenHeader();
         }
       },
 
@@ -46,6 +86,7 @@ $(document).ready(() => {
 
         Cookies.set("username", this.username, { expires: 30 });
         Cookies.set("token", this.token, { expires: 30 });
+        this.setTokenHeader();
       },
 
       handleServerErrors: function(response) {
@@ -130,10 +171,31 @@ $(document).ready(() => {
   var markers = {
     collection: [],
 
+    toMap: function() {
+      for (var i = 0; i < this.collection.length; i++) {
+        var dbMarker = this.collection[i];
+        new google.maps.Marker({
+          position: { lat: parseFloat(dbMarker.latitude), lng: parseFloat(dbMarker.longitude) },
+          map: map,
+          title: dbMarker.name
+        });
+      }
+    },
+
+    newToMap: function(newMarker) {
+      this.collection.push(newMarker);
+      new google.maps.Marker({
+        position: {lat: parseFloat(newMarker.latitude), lng: parseFloat(newMarker.longitude)},
+        map: map,
+        title: newMarker.name
+      });
+    },
+
     retrieve: function() {
       $.get("apiV1/markers/withusers", (data) => {
         if (!(data.error || data.errors)) {
           this.collection = data;
+          this.toMap()
         } else {
           console.log("WARNING: Marker retrieval failure");
         }
@@ -142,20 +204,43 @@ $(document).ready(() => {
       });
     },
 
-    handleErrorsInModal: function() {
+    handleErrorsInModal: function(response) {
+      var msg_string = "";
+      if (response.errors) {
+        Object.keys(response.errors).forEach( (key, idx) => {
+          msg_string += key + " " + response.errors[key] + ". ";
+        });
+      } else if (response.error) {
+        msg_string = response.error.message;
+      } else {
+        msg_string = "Failed marker operations. Try again.";
+      }
 
+      $(".marker-errors").text(msg_string);
     },
 
     create: function(lat, long, name, desc) {
-      $.post("apiV1/markers", {latitude: latitude, longitude: longitude, name: name, description: desc}, (data) => {
+      $.post("apiV1/markers", {latitude: lat, longitude: long, name: name, description: desc}, (data) => {
         if (data.error || data.errors) {
           this.handleErrorsInModal(data);
+          return false;
+        } else {
+          $("#newmarker").hide();
+          msg.showAffirmation("Successfully created a marker for '" + data.marker.name + "'.");
+          this.newToMap(data.marker);
+          map.panTo({ lat: parseFloat(data.marker.latitude), lng: parseFloat(data.marker.longitude) });
+          return true;
         }
+      }).fail((data) => {
+        var response = data.responseJSON;
+        this.handleErrorsInModal(response);
+        return false;
       });
     }
   };
 
   markers.retrieve();
+
 
   // Input Handling
   $("#create-login-button").click((e) => {
@@ -208,6 +293,8 @@ $(document).ready(() => {
 
   $("#add-marker-button").click((e) => {
     if (user.isLogged){
+      modalMap.setCenter(map.getCenter());
+      modalMapMarker.setPosition(map.getCenter());
       $("#newmarker").show();
     } else {
       msg.showAlert("You must be logged in to add a marker.");
@@ -215,8 +302,18 @@ $(document).ready(() => {
   });
 
   $(".cancelbtn").click((e) => {
+    $(".marker-errors").text("");
     $("#newmarker").hide();
   });
 
+  $("#add").click((e) => {
+    e.preventDefault();
+    $(".marker-errors").text("");
+    var mLat = modalMapMarker.getPosition().lat;
+    var mLng = modalMapMarker.getPosition().lng;
+    var mName = $("#markerName").val();
+    var mDesc = $("#description").val();
+    markers.create(mLat, mLng, mName, mDesc);
+  });
 
 });

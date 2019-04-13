@@ -5,6 +5,7 @@ block content
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
     script(src='javascripts/js.cookie.js')
     script(src='javascripts/main.js')
+    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBK2Mfs4UEpqJXALJwBje0UdMKWjt88Zh8&callback=initMap')
   body
     navbar.title-login
       .title Ghoul Alert
@@ -37,23 +38,24 @@ block content
             
         
     section#map
-      iframe(src='https://www.google.com/maps/d/embed?mid=1_UI6WRqjCzomDvp1b1sLZYz7qY8&hl=en_US', width='640', height='480')
         
     section
-      button#add-marker-button(style='width:auto;') ADD MARKER
+      button#add-marker-button(style='width:auto;') ADD SIGHTING
       #newmarker.modal
         form.modal-content.animate(action='/')
-          h3 Adding New Marker
+          h3 Marking a New Sighting
           .imgcontainer
             span.close(onclick="document.getElementById('id01').style.display='none'", title='Close Modal') ×
-          .container
+          #add-marker-map.container
+          #add-marker-form.container
             label(for='name')
-              b Marker Name
+              b Sighting Name
             input#markerName(type='text', placeholder='Enter name for Marker', name='name', required='')
             label(for='description')
               b Description
-            input#description(type='text', placeholder='Enter description', name='description', required='')
-            button#add(type='submit') CREATE
+            textarea#description(placeholder='Enter description', name='description', rows='8', required='')
+            button#add(type='submit') CONFIRM SIGHTING
+            .marker-errors
           .container(style='background-color:#f1f1f1;')
             button.cancelbtn(type='button') Cancel
     section
