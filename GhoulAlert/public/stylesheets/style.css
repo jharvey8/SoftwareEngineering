@@ -223,12 +223,33 @@ span.psw {
 }
 
 /* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
+@media screen and (max-width: 420px) {
   span.psw {
      display: block;
      float: none;
   }
   .cancelbtn {
      width: 100%;
+  }
+
+  .title {
+    display: none;
+  }
+
+  .login {
+    width: 100%;
+  }
+}
+
+/* Change map size at low height */
+@media screen and (max-height: 750px) {
+  #map {
+    height: 30em;
+  }
+}
+
+@media screen and (max-height: 640px) {
+  #map {
+    height: 25em;
   }
 }
